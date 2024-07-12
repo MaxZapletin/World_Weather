@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Replace with your actual API key from WeatherAPI.com
-API_KEY = os.environ.get('WEATHERAPI_KEY', 'your_api_key_here')
+API_KEY = os.environ.get('WEATHERAPI_KEY', '02a63c6660f84cb189790638241207')
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
 
 @app.route('/', methods=['GET', 'POST'])
