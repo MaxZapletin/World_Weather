@@ -4,9 +4,9 @@ import os
 
 app = Flask(__name__)
 
-# Replace with your actual API key
-API_KEY = os.environ.get('OPENWEATHERMAP_API_KEY', 'your_api_key_here')
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+# Replace with your actual API key from WeatherAPI.com
+API_KEY = os.environ.get('WEATHERAPI_KEY', 'your_api_key_here')
+BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -18,19 +18,29 @@ def index():
 
 def get_weather(city):
     params = {
+        'key': API_KEY,
         'q': city,
-        'appid': API_KEY,
-        'units': 'metric'
+        'days': 3  # Get 3-day forecast
     }
     response = requests.get(BASE_URL, params=params)
-    data = response.json()
     
     if response.status_code == 200:
+        data = response.json()
         return {
-            'city': data['name'],
-            'temperature': data['main']['temp'],
-            'description': data['weather'][0]['description'],
-            'icon': data['weather'][0]['icon'],
+            'location': data['location']['name'],
+            'country': data['location']['country'],
+            'current': {
+                'temp_c': data['current']['temp_c'],
+                'condition': data['current']['condition']['text'],
+                'icon': data['current']['condition']['icon']
+            },
+            'forecast': [{
+                'date': day['date'],
+                'max_temp_c': day['day']['maxtemp_c'],
+                'min_temp_c': day['day']['mintemp_c'],
+                'condition': day['day']['condition']['text'],
+                'icon': day['day']['condition']['icon']
+            } for day in data['forecast']['forecastday']]
         }
     return None
 

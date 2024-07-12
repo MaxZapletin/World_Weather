@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .forecast { display: flex; justify-content: space-between; }
+        .day { border: 1px solid #ddd; padding: 10px; margin: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Weather Forecast</h1>
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    
+    {% if weather %}
+        <h2>Weather in {{ weather.location }}, {{ weather.country }}</h2>
+        <h3>Current Weather</h3>
+        <p>Temperature: {{ weather.current.temp_c }}°C</p>
+        <p>Conditions: {{ weather.current.condition }}</p>
+        <img src="{{ weather.current.icon }}" alt="Current weather icon">
+        
+        <h3>3-Day Forecast</h3>
+        <div class="forecast">
+            {% for day in weather.forecast %}
+                <div class="day">
+                    <h4>{{ day.date }}</h4>
+                    <p>Max: {{ day.max_temp_c }}°C</p>
+                    <p>Min: {{ day.min_temp_c }}°C</p>
+                    <p>{{ day.condition }}</p>
+                    <img src="{{ day.icon }}" alt="Forecast weather icon">
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
