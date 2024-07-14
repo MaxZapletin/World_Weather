@@ -37,6 +37,7 @@ def get_weather(city):
     # Send a GET request to the WeatherAPI
     response = requests.get(BASE_URL, params=params)
     
+    
     if response.status_code == 200:
         data = response.json()
         try:
