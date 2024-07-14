@@ -12,27 +12,25 @@
 </head>
 <body>
     <h1>Weather Forecast</h1>
-    <form method="POST">
+    <form method="GET" action="/">
         <input type="text" name="city" placeholder="Enter city name" required>
         <button type="submit">Get Weather</button>
     </form>
-    
+
     {% if weather %}
-        <h2>Weather in {{ weather.location }}, {{ weather.country }}</h2>
-        <h3>Current Weather</h3>
-        <p>Temperature: {{ weather.current.temp_c }}°C</p>
-        <p>Conditions: {{ weather.current.condition }}</p>
-        <img src="{{ weather.current.icon }}" alt="Current weather icon">
+        <h2>Weather for {{ weather.location }}, {{ weather.country }}</h2>
+        <p>Current temperature: {{ weather.current.temp_c }}°C</p>
+        <p>Condition: {{ weather.current.condition }}</p>
+        <img src="{{ weather.current.icon }}" alt="{{ weather.current.condition }}">
         
-        <h3>3-Day Forecast</h3>
         <div class="forecast">
             {% for day in weather.forecast %}
                 <div class="day">
-                    <h4>{{ day.date }}</h4>
+                    <h3>{{ day.date }}</h3>
                     <p>Max: {{ day.max_temp_c }}°C</p>
                     <p>Min: {{ day.min_temp_c }}°C</p>
-                    <p>{{ day.condition }}</p>
-                    <img src="{{ day.icon }}" alt="Forecast weather icon">
+                    <p>Condition: {{ day.condition }}</p>
+                    <img src="{{ day.icon }}" alt="{{ day.condition }}">
                 </div>
             {% endfor %}
         </div>
