@@ -23,6 +23,7 @@ def get_weather(city):
     }
     response = requests.get(BASE_URL, params=params)
     
+    
     if response.status_code == 200:
         data = response.json()
         return {
