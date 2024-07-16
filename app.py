@@ -69,4 +69,4 @@ def get_weather(city):
         return None
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000)   
