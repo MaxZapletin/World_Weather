@@ -3,38 +3,36 @@ import requests
 
 app = Flask(__name__)
 
-# Use only the default API key
 API_KEY = '02a63c6660f84cb189790638241207'
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # Retrieve the city from the query parameters
-    city = request.args.get('city')
     weather_data = None
+    city = None
 
-    # If a city is provided, get the weather data
+    if request.method == 'POST':
+        city = request.form.get('city')
+    else:
+        city = request.args.get('city')
+
     if city:
         weather_data = get_weather(city)
 
-    # Check if the client accepts JSON response
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         if weather_data:
             return jsonify(weather_data)
         else:
             return jsonify({'error': 'Weather data not found'}), 404
     else:
-        # Render the HTML template with weather data
         return render_template('index.html', weather=weather_data)
 
 def get_weather(city):
-    # Set up the parameters for the API request
     params = {
         'key': API_KEY,
         'q': city,
-        'days': 3  # Get 3-day forecast
+        'days': 3  
     }
-    # Send a GET request to the WeatherAPI
     response = requests.get(BASE_URL, params=params)
     
     
