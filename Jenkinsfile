@@ -5,7 +5,7 @@ pipeline {
         stage('Clone repository') {
             steps {
                 // Replace 'your-repo-url' with your actual repository URL
-                git 'https://github.com/Weather-AP/World_Weather'
+                git 'https://github.com/Weather-AP/World_Weather/tree/develop'
             }
         }
 
