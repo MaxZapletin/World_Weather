@@ -2,18 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone repository') {
-            steps {
-                // Replace 'your-repo-url' with your actual repository URL
-                git 'https://github.com/Weather-AP/World_Weather/tree/develop'
-            }
-        }
-
         stage('Build Docker image') {
             steps {
-                 
-                sh 'docker build -t weather_app:v1.2 .'
-                
+                sh 'docker build -t weather_app:v1.2 .' 
             }
         }
 
