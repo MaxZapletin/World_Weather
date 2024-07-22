@@ -1,2 +1,6 @@
 .app
 __pychache__
+.terraform
+.terraform*
+*.terraform*
+*terraform.tfstate*
