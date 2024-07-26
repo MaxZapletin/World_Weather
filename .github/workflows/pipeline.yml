@@ -15,26 +15,11 @@ jobs:
 
       - name: Configure AWS credentials from secrets
         uses: aws-actions/configure-aws-credentials@v1
-        
+
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Assume AWS Role
-        id: assume-role
-        run: |
-          ROLE_CREDENTIALS=$(aws sts assume-role --role-arn ${{ secrets.AWS_ROLE_TO_ASSUME }} --role-session-name github-actions --external-id Weather-AP/World_Weather --output json)
-          echo "AWS_ACCESS_KEY_ID=$(echo $ROLE_CREDENTIALS | jq -r '.Credentials.AccessKeyId')" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=$(echo $ROLE_CREDENTIALS | jq -r '.Credentials.SecretAccessKey')" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=$(echo $ROLE_CREDENTIALS | jq -r '.Credentials.SessionToken')" >> $GITHUB_ENV
-
-      - name: Configure AWS credentials for assumed role
-        run: |
-          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws configure set aws_session_token ${{ env.AWS_SESSION_TOKEN }}
-          aws configure set region ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         run: |
