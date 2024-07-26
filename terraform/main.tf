@@ -14,3 +14,7 @@ module "ecr" {
 module "ecs" {
   source = "./ecs"
 }
+
+module "iam" {
+  source = "./iam"
+}
