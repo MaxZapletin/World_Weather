@@ -31,9 +31,10 @@ jobs:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           IMAGE_TAG: latest
           BRANCH_NAME: ${{ github.ref_name }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY:$BRANCH_NAME-$IMAGE_TAG .
-          docker push $ECR_REGISTRY:$BRANCH_NAME-$IMAGE_TAG
+          docker build -t $ECR_REGISTRY:$BRANCH_NAME-$COMMIT_SHA-$IMAGE_TAG .
+          docker push $ECR_REGISTRY:$BRANCH_NAME-$COMMIT_SHA-$IMAGE_TAG
 
 # test:
 #     runs-on: ubuntu-latest
