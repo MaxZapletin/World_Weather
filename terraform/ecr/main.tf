@@ -44,18 +44,23 @@ resource "aws_ecr_repository" "weather" {
 resource "aws_ecr_lifecycle_policy" "weather_policy" {
   repository = aws_ecr_repository.weather.name
 
-  policy = jsonencode({
-    rules = [{
-      rulePriority = 1
-      description  = "Keep last images"
-      selection = {
-        tagStatus   = "any"
-        countType   = "imageCountMoreThan"
-        countNumber = 5
-      }
-      action = {
-        type = "expire"
-      }
-    }]
-  })
+policy = <<EOF
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Keep last 5 images",
+            "selection": {
+                "tagStatus": "tagged",
+                "tagPrefixList": ["v"],
+                "countType": "imageCountMoreThan",
+                "countNumber": 5
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
+EOF
 }
