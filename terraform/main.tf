@@ -18,3 +18,7 @@ module "ecs" {
 module "iam" {
   source = "./iam"
 }
+
+module "eks" {
+  source = "./eks"
+}
