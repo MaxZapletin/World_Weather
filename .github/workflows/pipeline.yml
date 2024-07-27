@@ -31,8 +31,10 @@ jobs:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY:$GITHUB_HEAD_REF-$IMAGE_TAG .
-          docker push $ECR_REGISTRY:$GITHUB_HEAD_REF-$IMAGE_TAG
+          echo $GITHUB_HEAD_REF
+          echo $GITHUB_REF
+          docker build -t $ECR_REGISTRY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY:$IMAGE_TAG
 
 # test:
 #     runs-on: ubuntu-latest
