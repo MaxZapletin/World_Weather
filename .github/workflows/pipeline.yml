@@ -39,7 +39,7 @@ jobs:
             IMAGE_TAG=latest
             COMMIT_TAG=${COMMIT_SHA:0:7}
             BRANCH_TAG=${BRANCH_NAME}-${COMMIT_TAG}
-            RUN echo ${PWD} && ls -lR
+            
             docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
