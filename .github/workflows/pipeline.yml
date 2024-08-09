@@ -45,6 +45,7 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
 
+
 # test:
 #     runs-on: ubuntu-latest
 #     steps:
