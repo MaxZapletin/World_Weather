@@ -54,7 +54,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
               task-definition: task-definition.json
-              container-name: weather-app
+              container-name: weather
               image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
       
       - name: Deploy Amazon ECS task definition
