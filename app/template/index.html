@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --bg-color: #ecf0f1;
+            --text-color: #34495e;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            width: 60%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .weather-info {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .weather-info h2 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+        .current-weather {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .current-weather img {
+            width: 100px;
+            height: 100px;
+        }
+        .temperature {
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .forecast {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .day {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        .day h4 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+        .day img {
+            width: 50px;
+            height: 50px;
+        }
+        @media (max-width: 600px) {
+            .forecast {
+                flex-direction: column;
+            }
+            .day {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Forecast</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter City name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+        
+        {% if weather %}
+            <div class="weather-info">
+                <h2>Weather in {{ weather.location }}, {{ weather.country }}</h2>
+                <div class="current-weather">
+                    <img src="{{ weather.current.icon }}" alt="Current weather icon">
+                    <div>
+                        <span class="temperature">{{ weather.current.temp_c }}°C</span>
+                        <p>{{ weather.current.condition }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>3-Day Forecast</h3>
+            <div class="forecast">
+                {% for day in weather.forecast %}
+                    <div class="day">
+                        <h4>{{ day.date }}</h4>
+                        <img src="{{ day.icon }}" alt="Forecast weather icon">
+                        <p>{{ day.condition }}</p>
+                        <p>Max: {{ day.max_temp_c }}°C</p>
+                        <p>Min: {{ day.min_temp_c }}°C</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
