@@ -16,10 +16,10 @@ resource "aws_iam_role" "ecs_execution_role" {
   name = "ecs_execution_role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole",
+      Effect    = "Allow",
       Principal = {
         Service = "ecs-tasks.amazonaws.com"
       }
@@ -42,11 +42,11 @@ resource "aws_ecs_task_definition" "app_template" {
 
   container_definitions = jsonencode([
     {
-      name  = "weather-app"
-      image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest"
+      name  = "weather-app",
+      image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest",
       portMappings = [
         {
-          containerPort = 80
+          containerPort = 80,
           hostPort      = 80
         }
       ]
@@ -54,18 +54,19 @@ resource "aws_ecs_task_definition" "app_template" {
   ])
 
   tags = {
-    Environment = "production"
-    Project     = "MyApp"
+    Environment = "production",
+    Project     = "WeatherApp"
   }
 }
+
 resource "aws_ecs_service" "weather_app_service" {
   name            = "weather-app-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app_template.arn
-  desired_count   = 1
+  desired_count   = 1 
   launch_type     = "FARGATE"
 
-network_configuration {
+  network_configuration {
     subnets          = var.public_subnet_ids
     security_groups  = [var.ecs_security_group_id]
     assign_public_ip = true
