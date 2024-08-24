@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "app_template" {
   container_definitions = jsonencode([
     {
       name  = "weather-app"
-      image = "${var.ecr_repository_url}:latest"
+      image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest"
       portMappings = [
         {
           containerPort = 80
