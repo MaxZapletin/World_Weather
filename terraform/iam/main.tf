@@ -46,19 +46,11 @@ resource "aws_iam_policy" "github_actions_policy" {
           "ec2:DescribeImages"
         ]
         Resource = "*"
-      },
+      },  
       {
         Effect = "Allow"
-        Action = [
-          "eks:ListClusters",
-          "eks:DescribeCluster",
-          "eks:ListNodegroups",
-          "eks:DescribeNodegroup",
-          "eks:ListUpdates",
-          "eks:DescribeUpdate",
-          "eks:AccessKubernetesApi"
-        ]
-        Resource = "*"
+        Action = "iam:PassRole"
+        Resource = "arn:aws:iam::*:role/ecs_execution_role"
       }
     ]
   })
