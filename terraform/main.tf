@@ -3,10 +3,6 @@ provider "aws" {
   profile = var.aws_profile
 }
 
-module "ec2" {
-  source = "./ec2"
-}
-
 module "ecr" {
   source = "./ecr"
 }
@@ -19,6 +15,6 @@ module "iam" {
   source = "./iam"
 }
 
-module "eks" {
-  source = "./eks"
-}
+# module "eks" {
+#   source = "./eks"
+# }
