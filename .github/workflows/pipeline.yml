@@ -50,11 +50,13 @@ jobs:
               aws ecs describe-task-definition --task-definition weather-app-task --query taskDefinition > task-definition.json
       
       - name: Fill in the new image ID in the Amazon ECS task definition
+        env:
+          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
               task-definition: task-definition.json
-              container-name: weather
+              container-name: $CONTAINER_NAME
               image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
       
       - name: Deploy Amazon ECS task definition
