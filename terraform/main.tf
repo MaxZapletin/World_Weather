@@ -9,6 +9,7 @@ module "ecr" {
 
 module "ecs" {
   source = "./ecs"
+  ecr_repository_url = module.ecr.weather_repository_url
 }
 
 module "iam" {

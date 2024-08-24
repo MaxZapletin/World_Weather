@@ -4,7 +4,6 @@ resource "aws_ecs_cluster" "main" {
   setting {
     name  = "containerInsights"
     value = "enabled"
-    repository_url           = module.ecr.weather_repository_url
   }
 
   tags = {
@@ -44,10 +43,10 @@ resource "aws_ecs_task_definition" "app_template" {
   container_definitions = jsonencode([
     {
       name  = "weather-app"
-      image = "${aws_ecr_repository.weather.name}:latest"
+      image = "${var.ecr_repository_url}:latest"
       portMappings = [
         {
-          containerPort = 5000
+          containerPort = 80
           hostPort      = 80
         }
       ]
