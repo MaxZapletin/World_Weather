@@ -1,11 +1,11 @@
 name: Build and Push Docker Image to ECR
 
 on:
-#
+
   workflow_dispatch:
   push:
     branches:
-      - develop
+ #     - develop
       - main
 
 jobs:
@@ -45,7 +45,25 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
 
-
+            - name: Download task definition
+            run: |
+              aws ecs describe-task-definition --task-definition weather-app-task --query taskDefinition > task-definition.json
+      
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+              task-definition: task-definition.json
+              container-name: weather-app
+              image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
+      
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+              task-definition: ${{ steps.task-def.outputs.task-definition }}
+              service: weather-app-service
+              cluster: weather-ecs-cluster
+              wait-for-service-stability: true
 # test:
 #     runs-on: ubuntu-latest
 #     steps:
