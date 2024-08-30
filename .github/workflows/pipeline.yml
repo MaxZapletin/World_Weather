@@ -46,9 +46,9 @@ jobs:
             docker ps
             sleep 15
             docker ps
-
-            curl -vvv --fail http://localhost:5000 || exit 1
-            
+            CONTAINER_ID=$(docker ps -q --filter ancestor=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG)
+            docker logs $CONTAINER_ID
+            curl -vvv --fail localhost:5000 
             CONTAINER_ID=$(docker ps -q --filter ancestor=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG)
             docker logs $CONTAINER_ID
 
