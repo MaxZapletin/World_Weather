@@ -22,8 +22,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-          - name: Build and run Docker image
-          run: |
+      - name: Build and run Docker image
+        run: |
             IMAGE_TAG=develop
             BRANCH_TAG=${BRANCH_NAME}-${COMMIT_SHA:0:7}
             
@@ -35,41 +35,41 @@ jobs:
             sleep 15
             docker ps
         
-          - name: Check application logs
-            run: |
+      - name: Check application logs
+        run: |
               echo "Application Logs:"
               docker logs weather_app
           
-          - name: Check application files
-            run: |
-              echo "Application Files:"
-              docker exec weather_app ls -R /app
-          
-          - name: Check Python packages
-            run: |
-              echo "Installed Python Packages:"
-              docker exec weather_app pip list
-          
-          - name: Check environment variables
-            run: |
-              echo "Environment Variables:"
-              docker exec weather_app env
-          
-          - name: Test application
-            run: |
-              curl -vvv --fail localhost:5000 || true
-              docker logs weather_app
-          
-          - name: Check for Python errors
-            run: |
-              echo "Checking for Python errors:"
-              docker logs weather_app 2>&1 | grep -i "error" || true
-              docker logs weather_app 2>&1 | grep -i "exception" || true
-          
-          - name: Display app.py contents
-            run: |
-              echo "Contents of app.py:"
-              docker exec weather_app cat /app/app.py
+      - name: Check application files
+        run: |
+            echo "Application Files:"
+            docker exec weather_app ls -R /app
+        
+      - name: Check Python packages
+        run: |
+          echo "Installed Python Packages:"
+          docker exec weather_app pip list
+      
+      - name: Check environment variables
+        run: |
+          echo "Environment Variables:"
+          docker exec weather_app env
+      
+      - name: Test application
+        run: |
+          curl -vvv --fail localhost:5000 || true
+          docker logs weather_app
+      
+      - name: Check for Python errors
+        run: |
+          echo "Checking for Python errors:"
+          docker logs weather_app 2>&1 | grep -i "error" || true
+          docker logs weather_app 2>&1 | grep -i "exception" || true
+      
+      - name: Display app.py contents
+        run: |
+          echo "Contents of app.py:"
+          docker exec weather_app cat /app/app.py
       # - name: Login to ECR
       #   run: |
       #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
