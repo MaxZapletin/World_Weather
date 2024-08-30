@@ -2,10 +2,12 @@ FROM python:3.8-alpine
 
 WORKDIR /app
 
-COPY ./requirements.txt .
-COPY ./app.py .
-COPY ./template ./template
+COPY requirements.txt /app/requirements.txt
+COPY app.py /app/app.py
+COPY template/index.html /app/template/index.html
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "app.py"]
+ENTRYPOINT [ "python" ]
+
+CMD ["app.py" ]
