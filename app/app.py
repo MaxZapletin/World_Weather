@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__)
 
 API_KEY = '02a63c6660f84cb189790638241207'
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
