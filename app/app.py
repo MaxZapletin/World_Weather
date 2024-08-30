@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='template')
 
 API_KEY = '02a63c6660f84cb189790638241207'
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
@@ -35,7 +35,6 @@ def get_weather(city):
     }
     response = requests.get(BASE_URL, params=params)
     
-    
     if response.status_code == 200:
         data = response.json()
         try:
@@ -68,5 +67,3 @@ def get_weather(city):
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
-
-
