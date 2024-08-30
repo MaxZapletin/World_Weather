@@ -32,16 +32,18 @@ jobs:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           COMMIT_SHA: ${{ github.sha }}
+          BRANCH_NAME: ${{ github.ref_name }}
           FILE: ${{ 'app/Dockerfile' }}
         run: |
           IMAGE_TAG=develop
           docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
-      - name: Run Docker container for testing
-        run: |
-          docker run -d -p 5000:5000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:develop
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
+          docker run -d -p 5000:5000 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
           sleep 5
           curl --fail http://localhost:5000 || exit 1
+      # - name: Run Docker container for testing
+      #   run: |
+
       # - name: Test Docker container
       #   run: |
           # sleep 10
