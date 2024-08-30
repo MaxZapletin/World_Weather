@@ -29,20 +29,27 @@ jobs:
 
       - name: Build Docker image for testing
         env:
-              ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-              ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-              COMMIT_SHA: ${{ github.sha }}
-              BRANCH_NAME: ${{ github.ref_name }}
-              FILE: ${{ 'app/Dockerfile' }}
+            ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+            ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+            COMMIT_SHA: ${{ github.sha }}
+            BRANCH_NAME: ${{ github.ref_name }}
+            FILE: ${{ 'app/Dockerfile' }}
         run: |
             IMAGE_TAG=develop
             BRANCH_TAG=${BRANCH_NAME}-${COMMIT_SHA:0:7}
+            
             docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
-            docker run -d -p 50000:5000 --name test_container $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            sleep 10
-            docker exec test_container curl -vvv --fail http://localhost:5000 || (docker logs test_container && exit 1)
-            docker logs test_container
+            
+            docker run -d -p 5000:5000 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            
+            sleep 15
+            
+            curl --fail http://localhost:5000 || exit 1
+            
+            CONTAINER_ID=$(docker ps -q --filter ancestor=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG)
+            docker logs $CONTAINER_ID
 
       - name: Push Docker image to ECR
         if: success()
