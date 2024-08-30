@@ -26,6 +26,9 @@ jobs:
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+          - name: Checkout code
+          uses: actions/checkout@v2
+        
 
       - name: Build Docker image
         env:
@@ -34,6 +37,8 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           FILE: ${{ 'app/Dockerfile' }}
         run: |
+          pwd
+          ls -R
           IMAGE_TAG=develop
           docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
