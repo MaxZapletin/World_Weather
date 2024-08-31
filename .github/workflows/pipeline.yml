@@ -48,12 +48,12 @@ jobs:
       - name: Run Docker container
         run: |
           IMAGE_TAG=latest
-          docker run -d -p 5000:5000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker run -d -p 80:80 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
 
       - name: Test Docker container
         run: |
           sleep 3
-          RESPONSE=$(curl -v -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -d "city=Blabla" http://localhost:5000 -o response.json -w "%{http_code}")
+          RESPONSE=$(curl -v -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -d "city=Blabla" http://localhost -o response.json -w "%{http_code}")
           if [ "$RESPONSE" -eq 000 ]; then
             echo "Error: Failed to connect to the server"
             exit 1
