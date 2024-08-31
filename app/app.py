@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__, template_folder='template')
 
-API_KEY = '02a63c6660f84cb189790638241207'
+API_KEY = '0f63649353dc4861a7e84327243108'
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
 
 @app.route('/', methods=['GET', 'POST'])
