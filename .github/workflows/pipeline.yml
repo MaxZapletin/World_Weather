@@ -53,7 +53,23 @@ jobs:
       - name: Test Docker container
         run: |
           sleep 10
-          curl --fail http://localhost:5000 || exit 1
+          RESPONSE=$(curl -v -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -d "city=Blabla" http://localhost:5000 -o response.json -w "%{http_code}")
+          if [ "$RESPONSE" -eq 000 ]; then
+            echo "Error: Failed to connect to the server."
+            exit 1
+          fi
+          CONTENT=$(cat response.json)
+          if [ "$RESPONSE" -eq 200 ]; then
+            if echo "$CONTENT" | grep -q '"error"'; then
+              echo "Error: Weather data not found."
+              exit 1
+            else
+              echo "Success: Valid weather data received."
+            fi
+          else
+            echo "Request failed with status code: $RESPONSE"
+            exit 1
+          fi
 
       - name: Push Docker image to ECR
         if: success()
