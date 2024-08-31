@@ -57,11 +57,18 @@ jobs:
 
       - name: Push Docker image to ECR
         if: success()
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          COMMIT_SHA: ${{ github.sha }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          FILE: ${{ 'app/Dockerfile' }}
         run: |
           IMAGE_TAG=latest
           COMMIT_TAG=${COMMIT_SHA:0:7}
           BRANCH_TAG=${BRANCH_NAME}-${COMMIT_TAG}
           
+          docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
