@@ -135,13 +135,13 @@ jobs:
 
       - name: Fill the new image ID in the Amazon ECS task definition
         env:
-            CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+          CONTAINER_NAME: "weather-app"
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-            task-definition: task-definition.json
-            container-name: ${{ env.CONTAINER_NAME }}
-            image: ${{ env.IMAGE }}
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ env.IMAGE }}
 
       - name: Display original task definition
         run: cat task-definition.json
