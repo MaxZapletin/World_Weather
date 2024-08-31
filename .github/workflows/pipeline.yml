@@ -39,7 +39,7 @@ jobs:
           FILE: ${{ 'app/Dockerfile' }}
         run: |
           IMAGE_TAG=develop
-          docker build --no-cache --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
       - name: Run Docker container
         run: |
@@ -57,7 +57,6 @@ jobs:
           COMMIT_TAG=${COMMIT_SHA:0:7}
           BRANCH_TAG=${BRANCH_NAME}-${COMMIT_TAG}
           
-          docker build --file $FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG
