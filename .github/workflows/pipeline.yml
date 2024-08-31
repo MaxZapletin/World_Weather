@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run -d -p 5000:5000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:develop
+          docker run -d -p 5000:5000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
 
       - name: Test Docker container
         run: |
