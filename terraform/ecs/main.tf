@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "app_template" {
   container_definitions = jsonencode([
     {
       name  = "weather-app",
-      image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest",
+      image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest"
       portMappings = [
         {
           containerPort = 80,
@@ -63,7 +63,7 @@ resource "aws_ecs_service" "weather_app_service" {
   name            = "weather-app-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app_template.arn
-  desired_count   = 1 
+  desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
