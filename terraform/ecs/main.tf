@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "app_template" {
       image = "325953454369.dkr.ecr.eu-central-1.amazonaws.com/weather:latest"
       portMappings = [
         {
-          containerPort = 5000,
+          containerPort = 80,
           hostPort      = 80
         }
       ]
