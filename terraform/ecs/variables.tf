@@ -4,6 +4,6 @@ variable "public_subnet_ids" {
 }
 
 variable "ecs_security_group_id" {
-  description = "Security group ID for the ECS tasks"
+  description = "ID of the ECS security group"
   type        = string
 }
