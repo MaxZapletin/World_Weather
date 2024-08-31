@@ -52,7 +52,6 @@ jobs:
 
       - name: Test Docker container
         run: |
-          sleep 10
           RESPONSE=$(curl -v -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -d "city=Blabla" http://localhost:5000 -o response.json -w "%{http_code}")
           if [ "$RESPONSE" -eq 000 ]; then
             echo "Error: Failed to connect to the server"
