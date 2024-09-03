@@ -15,3 +15,7 @@ variable "record_name" {
   description = "DNS record to create in Route 53"
   type        = string
 }
+
+variable "tags_iam" {
+  type = string
+}
