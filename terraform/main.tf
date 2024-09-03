@@ -5,9 +5,6 @@ provider "aws" {
 
 module "ecr" {
   source = "./ecr"
-  tags = {
-    Name = "ECR Module"
-  }
 }
 
 module "ecs" {
@@ -23,9 +20,6 @@ module "vpc" {
 
 module "iam" {
   source = "./iam"
-  tags = {
-    Name = "IAM Module"
-  }
 }
 
 module "lb" {
